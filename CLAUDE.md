@@ -353,6 +353,10 @@ mapper:       adapter/inbound/mappers/{name}_mapper.py
 orm_mapper:   adapter/outbound/orm_mappers/{name}_orm_mapper.py
 ```
 
+**라우터 최초 검증 — `myself` 엔드포인트:**
+- 새 `{name}_router.py`를 만들 때는 실제 비즈니스 엔드포인트보다 **먼저** `GET /{prefix}/myself`를 추가해, router → use_case(input port) → interactor → port(output port) → repository로 이어지는 전체 배선이 실제로 동작하는지부터 확인한다.
+- DB·외부 API 의존 없이 하드코딩된 최소 데이터(예: `id`, `name`)를 그대로 왕복시켜, 이 엔드포인트가 200을 반환하면 DI/컴파일 오류가 없다는 뜻이다. 이후에 실제 비즈니스 로직을 붙인다.
+
 **Boundary Gate (경계 톨게이트):**
 - **Inbound**: `mapper`가 `schema` ↔ `dto` 변환. Router → Interactor 경계.
 - **Outbound**: `orm_mapper`가 `entity` ↔ ORM 변환. Repository → DB 경계.
@@ -423,6 +427,7 @@ orm_mapper:   adapter/outbound/orm_mappers/{name}_orm_mapper.py
 - No secrets in code or commits.
 - External/slow I/O: cache-first return, refresh in background when applicable.
 - Existing naming and fractal layout in the repo take precedence over generic templates.
+- **Docker 정리 금지 대상**: `sitetownpulse-*` 이미지·볼륨·컨테이너는 이 저장소와 무관한 **별도 프로젝트** 소유물입니다. `docker system prune`, `docker volume prune`, `docker image prune` 등 정리 작업 시 절대 대상에 포함하지 마세요.
 
 ---
 

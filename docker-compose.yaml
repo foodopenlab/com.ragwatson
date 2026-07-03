@@ -79,10 +79,12 @@ services:
     volumes:
       - ./com.auditor:/app
       - /app/__pycache__
+      - D:/hf_cache:/hf_cache
     env_file:
       - ./com.auditor/.env
     environment:
       OLLAMA_HOST: http://host.docker.internal:11434
+      HF_HOME: /hf_cache
     depends_on:
       pgvector:
         condition: service_healthy
@@ -119,6 +121,17 @@ services:
       - "5678:5678"
     volumes:
       - n8n_data:/home/node/.n8n
+
+  # ── Tunnel ─────────────────────────────────────────────────────────
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: cloudflared
+    command: tunnel --no-autoupdate run --token ${CLOUDFLARE_TUNNEL_TOKEN}
+    restart: unless-stopped
+    depends_on:
+      - backend
+      - frontend
+      - n8n
 
 volumes:
   pgvector_data:
