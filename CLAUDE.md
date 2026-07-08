@@ -258,7 +258,7 @@ Frameworks & Drivers  →  Interface Adapters  →  Use Cases  →  Entities
 ┌─────────────────────────────────────────────┐
 │  DDD  "What to build" — domain model        │
 │  ┌───────────────────────────────────────┐  │
-│  │  TDD  "How to build it" — practice   │  │
+│  │  TDD  "How to build it" — practice    │  │
 │  │  ┌─────────────────────────────────┐  │  │
 │  │  │  AOP  "Where to put extras"     │  │  │
 │  │  │       cross-cutting concerns    │  │  │
